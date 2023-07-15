@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CRM - Proton</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <style>
+      input[type=number]::-webkit-inner-spin-button,
+      input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      
+      input[type="date"]{
+        background-color: #cfdce9;
+        font-family: "Roboto Mono",monospace;
+        padding-left: 5px;
+        color: #000;
+        font-size: 18px;
+        border: 1px solid #000;
+        outline: none;
+        border-radius: 5px;
+      }
+      ::-webkit-calendar-picker-indicator{
+        padding-right: 5px;
+        color: #000;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+
+      .type-desc{
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+    </style>
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+    <div class="container">
+      <br/>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+
+
+        {% endfor %}
+      {% endif %}
+      
+      {% block content %}
+      {% endblock%}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script>
+      let errorElements = document.getElementsByClassName('alert-warning');
+      [...errorElements].forEach(el => {el.classList.add('alert alert-success')});
+    </script>
+  </body>
+</html>

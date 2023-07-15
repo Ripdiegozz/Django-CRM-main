@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<div class="card">
+  <div class="card-header"><strong>
+    	{{ customer_record.first_name }} 
+		{{ customer_record.last_name }}</strong>
+  </div>
+  <div class="card-body">
+
+
+
+<p class="card-text">
+<strong>Cédula: </strong>{{ customer_record.cedula }}</p>
+
+<p class="card-text">
+<strong>Fecha de Pedido: </strong>{{ customer_record.fecha_inicio }}
+</p>
+
+<p class="card-text">
+<strong>Fecha de Entrega: </strong>{{ customer_record.fecha_entrega }}</p>
+
+<p class="card-text">
+<strong>Tipo de Lente: </strong>{{ customer_record.tipo_lente }}</p>
+
+<p class="card-text">
+<strong>Laboratorio: </strong>{{ customer_record.laboratorio }}</p>
+
+<p class="card-text">
+<strong>Precio: </strong>{{ customer_record.precio }}</p>
+
+<p class="card-text">
+<strong>Creado En: </strong>{{ customer_record.created_at }}</p>
+
+<p class="card-text">
+<strong>ID: </strong>{{ customer_record.id }}</p>
+    
+    
+  </div>
+</div>
+
+<br/><br/>
+<a href="{% url 'home' %}" class="btn btn-secondary">Volver</a>
+
+<a href="{% url 'delete_record' customer_record.id %}" class="btn btn-danger">Eliminar</a>
+
+<a href="{% url 'update_record' customer_record.id %}" class="btn btn-secondary">Actualizar Registro</a>
+		
+
+{% endblock %}

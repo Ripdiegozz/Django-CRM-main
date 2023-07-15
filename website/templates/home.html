@@ -5,62 +5,97 @@
 {% if user.is_authenticated %}
 
 <div class="my-4">
-  <form method="get" class="flex flex-wrap gap-3">
+  <form method="get" class="filters-form">
     {{ myFilter.form }}
-    <div class="flex gap-2 mt-4">
+    <div class="filters-form-buttons">
       <button class="btn btn-info" type="submit">Buscar</button>
       <a class="btn btn-secondary" href="/">Limpiar Filtros</a>
     </div>
   </form>
 </div>
 
-<table class="table table-striped table-hover table-bordered">
-  <thead class="table-dark">
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Cédula</th>
+        <th scope="col">Fecha del pedido</th>
+        <th scope="col">Fecha de entrega</th>
+        <th scope="col">Tipo de lente</th>
+        <th scope="col">Laboratorio</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Fórmula</th>
+        <th scope="col">Registro creado en</th>
+        <th scope="col">ID</th>
+        <th scope="col">Editor</th>
+      </tr>
+    </thead>
+    <tbody>
+  
+  {% if records %}
+    {% for record in records %}
+      <tr>
+        <td>{{ record.first_name }} {{ record.last_name }}</td>
+        <td>{{ record.cedula }}</td>
+        <td>{{ record.fecha_inicio | date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{{ record.fecha_entrega | date:"SHORT_DATE_FORMAT" }}</td>
+        <td class="type-desc">{{ record.tipo_lente }}</td>
+        <td>{{ record.laboratorio }}</td>
+        <td>{{ record.precio }}</td>
+        <!-- <td class="type-desc">{{ record.formula_lente }}</td> -->
+        <td>
+          {% if record.formula_lente %}
+            <a href="{% url 'record-formula' record.id %}">Ver fórmula</a>
+          {% else %}
+            No hay fórmula
+          {% endif %}
+        </td>
+        <td>{{ record.created_at | date:"d/m/y | h:i:s" }}</td>
+        <td>{{ record.id }}</td>
+        <td><a href="{% url 'record' record.id %}">Ver registro</a></td>
+      </tr>
+    {% endfor %}
+  
+    {% else %}
+  
     <tr>
-      <th scope="col">Nombre</th>
-      <th scope="col">Cédula</th>
-      <th scope="col">Fecha del pedido</th>
-      <th scope="col">Fecha de entrega</th>
-      <th scope="col">Tipo de lente</th>
-      <th scope="col">Laboratorio</th>
-      <th scope="col">Precio</th>
-      <th scope="col">Fórmula</th>
-      <th scope="col">Registro creado en</th>
-      <th scope="col">ID</th>
-      <th scope="col">Editor</th>
+      <td colspan="11">No hay registros</td>
     </tr>
-  </thead>
-  <tbody>
+  
+  {% endif %}
+  
+  
+      </tbody>
+    </table>
 
-{% if records %}
-	{% for record in records %}
-		<tr>
-			<td>{{ record.first_name }} {{ record.last_name }}</td>
-			<td>{{ record.cedula }}</td>
-			<td>{{ record.fecha_inicio | date:"SHORT_DATE_FORMAT" }}</td>
-			<td>{{ record.fecha_entrega | date:"SHORT_DATE_FORMAT" }}</td>
-			<td class="type-desc">{{ record.tipo_lente }}</td>
-			<td>{{ record.laboratorio }}</td>
-			<td>{{ record.precio }}</td>
-			<td class="type-desc">{{ record.formula_lente }}</td>
-			<td>{{ record.created_at | date:"d/m/y | h:i:s" }}</td>
-			<td>{{ record.id }}</td>
-      <td><a href="{% url 'record' record.id %}">Ver registro</a></td>
-		</tr>
-	{% endfor %}
+  </div>
+  
+  <nav aria-label="...">
+    {% if records.has_other_pages %}
+      <ul class="pagination">
+        {% if records.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{ employees.previous_page_number }}">Previous</a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
 
-  {% else %}
+        {% for i in records.paginator.page_range %}
+          {% if records.number == i %}
+          <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{ i }}</a></li>
+          {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
 
-  <tr>
-    <td colspan="11">No hay registros</td>
-  </tr>
-
-{% endif %}
-
-	
-	  </tbody>
-	</table>
-
+        {% if records.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ employees.next_page_number }}">Next</a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+    </nav>
 
 
 
@@ -68,18 +103,18 @@
 {% else %}
 
 <div class="col-md-6 offset-md-3">
-<h1>Login</h1>
+<h1>Inicio de sesión</h1>
 <br/>
 
 <form method="POST" action="{% url 'home' %}">
 	{% csrf_token %}
 
   <div class="mb-3">
-    <input type="text" class="form-control" name="username", placeholder="Username" required>
+    <input type="text" class="form-control" name="username", placeholder="Usuario" required>
     
   </div><br/>
   <div class="mb-3">
-    <input type="password" class="form-control" name="password", placeholder="Password" required>
+    <input type="password" class="form-control" name="password", placeholder="Contraseña" required>
   </div>
   <br/>
   <button type="submit" class="btn btn-secondary">Iniciar Sesión</button>

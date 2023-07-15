@@ -8,4 +8,4 @@ class RecordFilter(django_filters.FilterSet):
     class Meta:
         model = Record
         fields = '__all__'
-        exclude = ['first_name', 'last_name', 'created_at', 'precio', 'fecha_inicio', 'fecha_entrega', 'laboratorio', 'tipo_lente', 'formula_lente']
+        exclude = ['first_name', 'last_name', 'created_at', 'precio', 'fecha_inicio', 'fecha_entrega', 'laboratorio', 'tipo_lente', 'formula_lente', 'add_formula']

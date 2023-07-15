@@ -1,16 +1,27 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import SignUpForm, AddRecordForm
 from .models import Record
 from .filters import RecordFilter
 
 def home(request):
 	records = Record.objects.all()
-
 	# Filter
 	myFilter = RecordFilter(request.GET, queryset=records)
 	records = myFilter.qs
+	# Pagination
+	page_number = request.GET.get('page', 1)
+	paginator = Paginator(records, 10)
+
+	try:
+		regitros = paginator.page(page_number)
+	except PageNotAnInteger:
+		regitros = paginator.page(1)
+	except EmptyPage:
+		regitros = paginator.page(paginator.num_pages)
+
 	# Check to see if logging in
 	if request.method == 'POST':
 		username = request.POST['username']
@@ -25,7 +36,7 @@ def home(request):
 			messages.success(request, "Hubo un error iniciando sesión, intenta de nuevo...")
 			return redirect('home')
 	else:
-		return render(request, 'home.html', {'records':records, 'myFilter':myFilter})
+		return render(request, 'home.html', {'records':regitros, 'myFilter':myFilter})
 
 
 def logout_user(request):
@@ -53,7 +64,6 @@ def register_user(request):
 	return render(request, 'register.html', {'form':form})
 
 
-
 def customer_record(request, pk):
 	if request.user.is_authenticated:
 		# Look Up Records
@@ -63,6 +73,15 @@ def customer_record(request, pk):
 		messages.success(request, "Necesitas iniciar sesión para ver esta página...")
 		return redirect('home')
 
+def customer_record_formula(request, pk):
+	if request.user.is_authenticated:
+		# Look Up Records
+		customer_record = Record.objects.get(id=pk)
+		customer_formula = customer_record.formula_lente.replace('\n', '<br>')
+		return render(request, 'formula_record.html', {'customer_record':customer_record, 'customer_formula':customer_formula })
+	else:
+		messages.success(request, "Necesitas iniciar sesión para ver esta página...")
+		return redirect('home')
 
 
 def delete_record(request, pk):

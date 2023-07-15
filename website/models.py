@@ -13,8 +13,9 @@ class Record(models.Model):
 	fecha_entrega =  models.DateField(auto_now=False, auto_now_add=False)
 	tipo_lente =  models.CharField(max_length=1000)
 	laboratorio =  models.CharField(max_length=250)
-	formula_lente =  models.CharField(max_length=1000)
 	precio =  models.FloatField()
+	add_formula = models.BooleanField(default=False)
+	formula_lente =  models.CharField(max_length=1000)
 
 	def __str__(self):
 		return(f"{self.first_name} {self.last_name}")

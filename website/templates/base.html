@@ -37,11 +37,46 @@
         white-space: nowrap;
       }
 
+      .filters-form{
+        display: flex;
+        max-width: 100%;
+        flex-flow: row wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .filters-form input{
+        width: 100%;
+        max-width: 150px;
+      }
+
+      .filters-form-buttons{
+        display: flex;
+        flex-flow: row wrap;
+        width: 100%;
+        margin-top: 10px;
+        gap: 10px;
+        align-items: center;
+      }
+
+      @media screen and (max-width: 900px) {
+        .filters-form input{
+          max-width: 75%;
+        }
+
+        .filters-form{
+          flex-flow: column wrap;
+        }
+
+        .filters-form-buttons{
+          justify-content: center;
+        }
+      }
     </style>
   </head>
   <body>
     {% include 'navbar.html' %}
-    <div class="container">
+    <div class="container-lg">
       <br/>
       {% if messages %}
         {% for message in messages %}
@@ -60,8 +95,19 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script>
-      let errorElements = document.getElementsByClassName('alert-warning');
-      [...errorElements].forEach(el => {el.classList.add('alert alert-success')});
+      const prescriptionField = document.getElementById('prescription_field')
+      const prescriptionCheck = document.getElementById('add_prescription_check')
+
+      const showPrescription = () =>{
+        if (prescriptionCheck.checked){
+          prescriptionField.classList.toggle('d-none')
+        } else {
+          prescriptionField.classList.toggle('d-none')
+        }
+      }
+
+      prescriptionCheck.addEventListener('change', showPrescription)
+
     </script>
   </body>
 </html>
